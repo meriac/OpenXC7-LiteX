@@ -1,0 +1,22 @@
+FROM ghcr.io/meriac/openxc7-dev:latest
+
+# install LiteX HDL environment
+RUN \
+    cd && mkdir litex && cd litex && \
+        git clone --recursive --depth=1 https://github.com/enjoy-digital/litex && \
+        cd litex && \
+            ./litex_setup.py --init --install --user && \
+        cd .. && \
+    cd .. && \
+    rm -rf `find litex -type d -regextype egrep -regex '.*/(test|tests|tester|\.git)$'` && \
+    pip cache purge
+
+# install missing depenendencies into minimized image
+ RUN \
+    sudo apt-get update -qq \
+    && DEBIAN_FRONTEND=noninteractive sudo apt-get -y install --no-install-recommends \
+        wget mc tree less bzip2 zip \
+    && sudo apt-get autoclean && sudo apt-get clean && sudo apt-get -y autoremove
+
+WORKDIR /workspaces
+CMD ["bash"]

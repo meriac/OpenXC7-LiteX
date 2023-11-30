@@ -1,0 +1,43 @@
+.PHONY: run rebuild build clean login publish status version multi
+
+CONTAINER_REGISTRY:=ghcr.io
+CONTAINER_OWNER:=meriac
+CONTAINER_NAME:=openxc7-litex
+CONTAINER_PREFIX:=$(CONTAINER_REGISTRY)/$(CONTAINER_OWNER)/$(CONTAINER_NAME)
+
+# determine container architecture
+CONTAINER_ARCH:=$(shell uname -m)
+ifeq ("$(CONTAINER_ARCH)","x86_64")
+	CONTAINER_ARCH:=amd64
+endif
+
+CONTAINER:=$(CONTAINER_PREFIX):$(CONTAINER_ARCH)
+CONTAINER_PLATFORM:=linux/$(CONTAINER_ARCH)
+
+run:
+	podman run -h $(CONTAINER_NAME) --rm -v $(PWD)/workspaces:/workspaces --platform $(CONTAINER_PLATFORM) -it $(CONTAINER)
+
+rebuild: clean build run
+
+build:
+	podman build -t $(CONTAINER) -f Containerfile --platform $(CONTAINER_PLATFORM)
+
+clean:
+	podman rmi -f $(CONTAINER)
+
+login:
+	@echo $(CR_PAT) | podman login $(CONTAINER_REGISTRY) -u DOESNT_MATTER --password-stdin
+
+publish: status
+	podman push --compress --compression-level 9 $(CONTAINER)
+
+status:
+	podman image tree $(CONTAINER)
+
+version:
+	@echo $(CONTAINER)
+
+manifest:
+	podman rmi -f $(CONTAINER_PREFIX):latest
+	podman manifest create $(CONTAINER_PREFIX):latest $(CONTAINER_PREFIX):amd64 $(CONTAINER_PREFIX):arm64
+	podman push --compress --compression-level 9 $(CONTAINER_PREFIX):latest
