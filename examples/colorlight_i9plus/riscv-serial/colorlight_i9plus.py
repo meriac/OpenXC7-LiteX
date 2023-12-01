@@ -118,7 +118,7 @@ class Platform(Xilinx7SeriesPlatform):
     default_clk_name   = "clk25"
     default_clk_period = 1e9/25e6
 
-    def __init__(self, toolchain="vivado"):
+    def __init__(self, toolchain):
         Xilinx7SeriesPlatform.__init__(self, "xc7a50tfgg484-1", _io, _connectors, toolchain=toolchain)
         self.toolchain.bitstream_commands = \
             ["set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 4 [current_design]"]
@@ -126,8 +126,7 @@ class Platform(Xilinx7SeriesPlatform):
             ["write_cfgmem -force -format bin -interface spix4 -size 16 "
              "-loadbit \"up 0x0 {build_name}.bit\" -file {build_name}.bin"]
 
-
-    def create_programmer(self, cfg="openocd_xc7_ft2232.cfg"):
+    def create_programmer(self, cfg):
         return OpenOCD(cfg, "bscan_spi_xc7a50t.bit")
 
     def do_finalize(self, fragment):

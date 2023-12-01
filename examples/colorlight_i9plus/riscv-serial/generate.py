@@ -27,7 +27,7 @@ from litex.gen import *
 
 from litex.build.io import DDROutput
 
-from colorlight_i9plus import colorlight_i9plus
+import colorlight_i9plus
 
 from litex.soc.cores.clock import *
 from litex.soc.integration.soc import SoCRegion
@@ -40,6 +40,7 @@ from litedram.modules import M12L64322A
 from litedram.phy import GENSDRPHY
 
 from liteeth.phy.s7rgmii import LiteEthPHYRGMII
+
 
 # CRG ----------------------------------------------------------------------------------------------
 
@@ -69,13 +70,13 @@ class _CRG(LiteXModule):
             sdram_clk = ClockSignal("sys_ps")
             self.specials += DDROutput(1, 0, platform.request("sdram_clock"), sdram_clk)
 
-        self.idelayctrl = S7IDELAYCTRL(self.cd_idelay)
+#        self.idelayctrl = S7IDELAYCTRL(self.cd_idelay)
 
 
 # BaseSoC ------------------------------------------------------------------------------------------
 
 class BaseSoC(SoCCore):
-    def __init__(self, toolchain="vivado", sys_clk_freq=100e6,
+    def __init__(self, toolchain, sys_clk_freq=100e6,
         with_dna        = False,
         with_pmod_uart  = False,
         with_ethernet   = False,
@@ -97,7 +98,7 @@ class BaseSoC(SoCCore):
         self.crg  = _CRG(platform, sys_clk_freq, with_dram)
 
         # SoCCore ----------------------------------------------------------------------------------
-        SoCCore.__init__(self, platform, sys_clk_freq, ident="LiteX SoC on Arty A7", **kwargs)
+        SoCCore.__init__(self, platform, sys_clk_freq, ident="LiteX SoC on ColorLight i9+", **kwargs)
 
         # DNA --------------------------------------------------------------------------------------
         if with_dna:
@@ -113,7 +114,6 @@ class BaseSoC(SoCCore):
                 module        = M12L64322A(sys_clk_freq, "1:1"),
                 l2_cache_size = kwargs.get("l2_size", 8192)
             )
-
 
         # Ethernet / Etherbone ---------------------------------------------------------------------
         if with_ethernet or with_etherbone:
@@ -144,7 +144,7 @@ class BaseSoC(SoCCore):
 
 def main():
     from litex.build.parser import LiteXArgumentParser
-    parser = LiteXArgumentParser(platform=colorlight_i9plus.Platform, description="LiteX SoC on Arty A7.")
+    parser = LiteXArgumentParser(platform=colorlight_i9plus.Platform, description="LiteX SoC on ColorLight i9+.")
     parser.add_target_argument("--flash",          action="store_true",       help="Flash bitstream.")
     parser.add_target_argument("--sys-clk-freq",   default=100e6, type=float, help="System clock frequency.")
     parser.add_target_argument("--with-dna",       action="store_true",       help="Enable 7-Series DNA.")
