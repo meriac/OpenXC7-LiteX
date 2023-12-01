@@ -1,5 +1,6 @@
 .PHONY: run rebuild build clean login publish status version multi
 
+CONTAINER_BASEIMG:=ghcr.io/meriac/openxc7-dev:latest
 CONTAINER_REGISTRY:=ghcr.io
 CONTAINER_OWNER:=meriac
 CONTAINER_NAME:=openxc7-litex
@@ -23,7 +24,10 @@ run:
 rebuild: clean build run
 
 build:
-	podman build -t $(CONTAINER) -f Containerfile --platform $(CONTAINER_PLATFORM)
+	# ensure to have a fresh base image on every build
+	podman rmi -f $(CONTAINER_BASEIMG)
+	# build depending image
+	podman build -t $(CONTAINER) -f Containerfile --platform $(CONTAINER_PLATFORM) --build-arg BASEIMG=$(CONTAINER_BASEIMG)
 
 clean:
 	podman rmi -f $(CONTAINER)
@@ -44,3 +48,4 @@ manifest:
 	podman rmi -f $(CONTAINER_PREFIX):latest
 	podman manifest create $(CONTAINER_PREFIX):latest $(CONTAINER_PREFIX):amd64 $(CONTAINER_PREFIX):arm64
 	podman push --compress --compression-level 9 $(CONTAINER_PREFIX):latest
+	podman rmi -f $(CONTAINER_PREFIX):latest

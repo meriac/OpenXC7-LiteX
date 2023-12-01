@@ -1,4 +1,5 @@
-FROM ghcr.io/meriac/openxc7-dev:latest
+ARG BASEIMG=openxc7-dev
+FROM ${BASEIMG}
 
 # install LiteX HDL environment
 RUN \
