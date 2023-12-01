@@ -14,8 +14,11 @@ endif
 CONTAINER:=$(CONTAINER_PREFIX):$(CONTAINER_ARCH)
 CONTAINER_PLATFORM:=linux/$(CONTAINER_ARCH)
 
+# If SELinux is enabled, add ':Z' to mapped volumes
+SELINUX_SECURITY:=$(shell if [ "$$(getenforce 2>&1)" = "Enforcing" ]; then echo ":Z"; else echo ""; fi)
+
 run:
-	podman run -h $(CONTAINER_NAME) --rm -v $(PWD)/workspaces:/workspaces --platform $(CONTAINER_PLATFORM) -it $(CONTAINER)
+	podman run -h $(CONTAINER_NAME) --rm -v $(PWD)/workspaces:/workspaces$(SELINUX_SECURITY) --platform $(CONTAINER_PLATFORM) -it $(CONTAINER)
 
 rebuild: clean build run
 
