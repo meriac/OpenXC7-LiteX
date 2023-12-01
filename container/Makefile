@@ -19,7 +19,7 @@ CONTAINER_PLATFORM:=linux/$(CONTAINER_ARCH)
 SELINUX_SECURITY:=$(shell if [ "$$(getenforce 2>&1)" = "Enforcing" ]; then echo ":Z"; else echo ""; fi)
 
 run:
-	podman run -h $(CONTAINER_NAME) --rm -v $(PWD)/workspaces:/workspaces$(SELINUX_SECURITY) --platform $(CONTAINER_PLATFORM) -it $(CONTAINER)
+	podman run -h $(CONTAINER_NAME) --rm -v $(PWD)/../examples:/workspaces$(SELINUX_SECURITY) --platform $(CONTAINER_PLATFORM) --userns=keep-id -it $(CONTAINER)
 
 rebuild: clean build run
 
