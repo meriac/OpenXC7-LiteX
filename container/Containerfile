@@ -19,5 +19,8 @@ RUN \
         wget mc tree less bzip2 zip \
     && sudo apt-get autoclean && sudo apt-get clean && sudo apt-get -y autoremove
 
+# install configuration files like for mc
+COPY --chown=${USER} .config /home/${USER}/.config
+
 WORKDIR /workspaces
 CMD ["bash"]

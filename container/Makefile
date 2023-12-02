@@ -2,6 +2,7 @@
 
 CONTAINER_BASEIMG:=ghcr.io/meriac/openxc7-dev:latest
 CONTAINER_REGISTRY:=ghcr.io
+CONTAINER_USER:=builder
 CONTAINER_OWNER:=meriac
 CONTAINER_NAME:=openxc7-litex
 CONTAINER_PREFIX:=$(CONTAINER_REGISTRY)/$(CONTAINER_OWNER)/$(CONTAINER_NAME)
@@ -27,7 +28,7 @@ build:
 	# ensure to have a fresh base image on every build
 	podman rmi -f $(CONTAINER_BASEIMG)
 	# build depending image
-	podman build -t $(CONTAINER) -f Containerfile --platform $(CONTAINER_PLATFORM) --build-arg BASEIMG=$(CONTAINER_BASEIMG)
+	podman build -t $(CONTAINER) -f Containerfile --env USER=$(CONTAINER_USER) --platform $(CONTAINER_PLATFORM) --build-arg BASEIMG=$(CONTAINER_BASEIMG)
 
 clean:
 	podman rmi -f $(CONTAINER)
