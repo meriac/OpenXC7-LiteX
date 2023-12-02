@@ -1,5 +1,15 @@
 {
-  "image": "ghcr.io/meriac/openxc7-litex:latest",
+  "name": "openxc7-litex",
+  "build": {
+    "dockerfile": "../container/Containerfile",
+    "context": "../container",
+    "args": {
+      "BASEIMG": "ghcr.io/meriac/openxc7-dev:latest"
+    }
+  },
+  "containerEnv" : {
+    "USER": "builder"
+  },
   "features": {
   }
 }
