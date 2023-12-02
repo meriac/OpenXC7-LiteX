@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "mshr-h.veriloghdl",
+        "ms-python.python",
         "ms-vscode.makefile-tools",
         "ms-azuretools.vscode-docker",
         "editorconfig.editorconfig"
