@@ -8,9 +8,10 @@
 
 To quickly evaluate this environment, please click on `Use this template`, `Open in a codespace`. Alternatively you can run this environmant locally on your machine using [Podman](https://podman.io/get-started) or [Docker](https://www.docker.com/get-started/) in a pre-installed container.
 
-- Please follow our [Getting started guide](#getting-started) for running the toolchain locally
-- [Instruction video for for compiling Verilog Blinky](https://youtu.be/JCctdP_i6y8) using Podman Desktop on Windows
-- [Instruction video for compiling a LiteX RISCV CPU Design](https://youtu.be/082bH_Vu2bo) using Cloud-based GitHub Codespaces:
+- For a seamless experience in setting up and running the toolchain on your local system, we highly recommend following our detailed [Getting Started Guide](#getting-started).
+- We provide example projects tailored for the [ColorLight i9+ platform (Xilinx Artix-7)](examples/colorlight_i9plus/) - demonstrating the development process and related workflows.
+- See [Instruction video for for compiling Verilog Blinky](https://youtu.be/JCctdP_i6y8) using Podman Desktop on Windows  ...
+- ... and our [instruction video for compiling a LiteX RISCV CPU Design](https://youtu.be/082bH_Vu2bo) using Cloud-based GitHub Codespaces:
 [<img src="documentation/images/codespace.png">](../../codespaces)
 
 ### LiteX: A Python-based Hardware Description Framework
