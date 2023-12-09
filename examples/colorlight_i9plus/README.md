@@ -18,40 +18,9 @@
 
 [<img src="../../documentation/images/i9plus-extboard.jpg">](https://github.com/wuxx/Colorlight-FPGA-Projects/blob/master/colorlight_i9plus_v6.1.md)
 
-
-## Build OpenOCD for programming ColorLight i9+ using CH347 on Linux
-
-[OpenOCD](https://openocd.org/), a versatile tool providing on-chip
-programming and debugging support, can be used for programming the
-ColorLight i9+ platform, particularly with the [CH347 chip](https://www.wch-ic.com/products/CH347.html). This guide will
-take you through the steps to build and configure OpenOCD for this
-specific use case.
-
-To set up OpenOCD for the CH347 chip on the ColorLight i9+ platform, follow these steps:
-```shell
-# Clone the OpenOCD repository
-git clone https://github.com/meriac/openocd
-
-# Navigate to the cloned repository
-cd openocd
-
-# Initialize the build configuration
-./bootstrap 
-
-# Configure the build specifically for CH347, while disabling warnings as errors
-./configure --enable-ch347 --disable-werror
-
-# Compile the source code using multiple threads for faster build
-make -j
-
-# Install OpenOCD to the system
-sudo make install
-```
-Ensure you have all necessary dependencies installed before proceeding with the build. For any issues or detailed documentation, refer to the [OpenOCD GitHub repository](https://github.com/meriac/openocd) or the [official OpenOCD documentation](https://openocd.org/pages/documentation.html).
-
 ### Programming ColorLight i9+ using CH347 on Linux using OpenOCD
 
-After installing OpenOCD in the previous step, you can use the following commands for programming ColorLight i9+ modules: 
+OpenOCD in already installed in devcontainer, you can use the following commands for programming ColorLight i9+ modules with sudo:
 - `ch347prog-sram`: For temporarily programming a bitstream file during development.
 - `ch347prog-flash`: For permanently programming a bitstream file.
 - `ch347prog-probe`: For detecting the device and the connected flash memory.

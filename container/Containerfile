@@ -16,8 +16,16 @@ RUN \
  RUN \
     sudo apt-get update -qq \
     && DEBIAN_FRONTEND=noninteractive sudo apt-get -y install --no-install-recommends \
-        wget mc tree less bzip2 zip \
+        wget mc tree less bzip2 zip usbutils libtool pkg-config libusb-1.0-0-dev unzip autotools-dev automake\
     && sudo apt-get autoclean && sudo apt-get clean && sudo apt-get -y autoremove
+
+
+# Install openocd
+RUN cd && mkdir flash && cd flash && \
+        git clone https://github.com/meriac/openocd && \
+        cd openocd && \
+        ./bootstrap && ./configure --enable-ch347 --disable-werror && \
+        make -j $(nproc) && sudo make install
 
 # install configuration files like for mc
 COPY --chown=${USER} .config /home/${USER}/.config
