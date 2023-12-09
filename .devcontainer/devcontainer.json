@@ -10,6 +10,10 @@
   "containerEnv" : {
     "USER": "builder"
   },
+  "mounts": [
+    "type=bind,source=/dev/bus/usb,target=/dev/bus/usb"
+  ],
+  "runArgs": ["--privileged"],
   "features": {
   }
 }
